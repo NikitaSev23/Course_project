@@ -409,33 +409,15 @@ void mouseWheelEvent(OpenGL *ogl, int delta)
 	camera.camDist += 0.01*delta;
 }
 
-static bool xyz = 0;
+static bool xyz = 0, castom = 1;
 //обработчик нажатия кнопок клавиатуры
 void keyDownEvent(OpenGL *ogl, int key)
 {
 	static bool switcher = 0;
-	if (key == 'L')
+	if (OpenGL::isKeyPressed('U'))
 	{
-		lightMode = !lightMode;
-	}
-
-	if (key == 'T')
-	{
-		textureMode = !textureMode;
-	}	   
-
-	if (key == 'R')
-	{
-		camera.fi1 = 1;
-		camera.fi2 = 1;
-		camera.camDist = 15;
-
-		light.pos = Vector3(1, 1, 3);
-	}
-
-	if (key == 'F')
-	{
-		light.pos = camera.pos;
+		if (castom) castom = 0;
+		else castom = 1;
 	}
 	if (OpenGL::isKeyPressed('I'))
 	{
@@ -1098,7 +1080,7 @@ void Render(OpenGL *ogl)
 		double Pi = 2 * 3.14;
 		DOT MidPoint(tank.x - st1, tank.y - st2, 1);
 		DotsOfTheCircle(MidPoint, 0.1, Pi);
-		AnimationSun();
+		if(castom)AnimationSun();
 	}
 	Shader::DontUseShaders();
 }   //конец тела функции
@@ -1129,6 +1111,7 @@ void RenderGUI(OpenGL *ogl)
 	ss << "O - вкл/выкл освещение" << std::endl;
 	ss << "WASD - управление (Y,-X,-Y,X)" << std::endl;
 	ss << "I - вкл/выкл направление координат" << std::endl;
+	ss << "U - вкл/выкл кастомное положение света, \n управление: G + ЛКМ" << std::endl;
 
 	rec.setText(ss.str().c_str());
 	rec.Draw();
